@@ -30,11 +30,19 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.blob();
+                //console.log(response.text());
+              //  return response.blob();
+              return response.json();
             })
-            .then(blob => {
-                const processedImage = URL.createObjectURL(blob);
-                document.getElementById('processed-image').src = processedImage;
+           // .then(blob => {
+             //   const processedImage = URL.createObjectURL(blob);
+              //  document.getElementById('processed-image').src = processedImage;
+           // })
+            .then(data => {
+//                data = JSON.parse(encoded_img);
+                console.log(data);
+                //const processedImage = URL.createObjectURL(blob);
+                document.getElementById('processed-image').src = "data:image/png;base64,"+ data["encoded_img"];
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
