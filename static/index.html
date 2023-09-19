@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Processing</title>
+</head>
+<body>
+    <h1>Image Upload and Processing</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" id="file-input">
+        <button type="submit">Upload and Process</button>
+    </form>
+    <div id="image-container">
+        <h2>Processed Image</h2>
+        <img id="processed-image" src="" alt="Processed Image">
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file-input').files[0]);
+
+            fetch('/lap', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const processedImage = URL.createObjectURL(blob);
+                document.getElementById('processed-image').src = processedImage;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>
